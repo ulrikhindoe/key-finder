@@ -16,7 +16,7 @@ const domReady = function (callback) {
 const click = () => {
   store.dispatch({type: 'NEXT_NOTE'})
   // store.dispatch({type: 'PLAYING_NOTE_STARTED'})
-  store.dispatch({type: 'STOP_PLAYING_NOTE'})
+  store.dispatch({type: 'IS_STOPPING_PLAYING_NOTE'})
 }
 
 document.body.onkeydown = function (event) {
@@ -38,19 +38,19 @@ const KeyTrainer = React.createClass({
                {note.toString()}
              </div>})
     return (
-    <div>
       <div>
-        <em>key-trainerr</em>
+        <div>
+          <em>key-trainerr</em>
+        </div>
+        <div style={{background: 'pink'}}>
+          {notes}
+        </div>
+        <div>
+          <button onClick={click}>
+            Next
+          </button>
+        </div>
       </div>
-      <div style={{background: 'pink'}}>
-        {notes}
-      </div>
-      <div>
-        <button onClick={click}>
-          Next
-        </button>
-      </div>
-    </div>
     )
   }
 })
@@ -66,13 +66,13 @@ const render = (state) => {
 
 const playAudio = (state) => {
   switch (state.audioState) {
-    case 'START_PLAYING_NOTE':
+    case 'IS_STARTING_PLAYING_NOTE':
       console.log('Play note ' + state.notes[state.currentNoteIndex])
       MIDI.noteOn(0, 48, 127, 0)
       store.dispatch({type: 'PLAYING_NOTE_STARTED'})
       setTimeout(() => store.dispatch({type: 'PLAYING_NOTE_TIMED_OUT'}), 3000)
       break
-    case 'STOP_PLAYING_NOTE':
+    case 'IS_STOPPING_PLAYING_NOTE':
       console.log('Stop Play note ' + state.notes[state.currentNoteIndex])
       MIDI.noteOff(0, 48, 0)
       store.dispatch({type: 'PLAYING_NOTE_STOPPED'})

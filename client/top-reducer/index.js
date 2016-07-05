@@ -6,8 +6,8 @@ var defaultState =  {
     audioState: 'WAITING'
 }
 
-// state:   WAITING   ->   START_PLAYING_NOTE    ->   IS_PLAYING_NOTE      ->     STOP_PLAYING_NOTE    ->    WAITING
-// action:        NEXT_NODE               PLAYING_NOTE_STARTED    PLAYING_NOTE_TIMED_OUT       PLAYING_NOTE_STOPPED
+// state:   WAITING   ->   IS_STARTING_PLAYING_NOTE    ->   IS_PLAYING_NOTE      ->     IS_STOPPING_PLAYING_NOTE    ->    WAITING
+// action:        NEXT_NOTE               PLAYING_NOTE_STARTED    PLAYING_NOTE_TIMED_OUT       PLAYING_NOTE_STOPPED
 
 module.exports = function (state = defaultState, action) {
     console.log('dispatch ' + action.type)
@@ -19,12 +19,12 @@ module.exports = function (state = defaultState, action) {
         if (state.currentNoteIndex >= state.notes.length - 1) {
             return {...state,
                 currentNoteIndex: 0,
-                audioState: 'START_PLAYING_NOTE'
+                audioState: 'IS_STARTING_PLAYING_NOTE'
               }
         }
         return {...state,
             currentNoteIndex: state.currentNoteIndex + 1,
-            audioState: 'START_PLAYING_NOTE'
+            audioState: 'IS_STARTING_PLAYING_NOTE'
           }
           break
     case 'PLAYING_NOTE_STARTED':
@@ -35,7 +35,7 @@ module.exports = function (state = defaultState, action) {
 
     case 'PLAYING_NOTE_TIMED_OUT':
         return {...state,
-          audioState: 'STOP_PLAYING_NOTE'
+          audioState: 'IS_STOPPING_PLAYING_NOTE'
         }
         break
     case 'PLAYING_NOTE_STOPPED':

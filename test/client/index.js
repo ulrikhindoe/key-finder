@@ -12,16 +12,16 @@ describe('top-reducer', () => {
     const expectedState = {
       notes: ['C', 'D', 'E'],
       currentNoteIndex: 0,
-      audioState: 'START_PLAYING_NOTE'
+      audioState: 'IS_STARTING_PLAYING_NOTE'
     }
     expect(actualState).to.deep.equal(expectedState)
   })
 
-  it('should not react to NEXT_NODE event if audioState is START_PLAYING_NOTE', () => {
+  it('should not react to NEXT_NODE event if audioState is IS_STARTING_PLAYING_NOTE', () => {
     const initialState = {
       notes: ['C', 'D', 'E'],
       currentNoteIndex: -1,
-      audioState: 'START_PLAYING_NOTE'
+      audioState: 'IS_STARTING_PLAYING_NOTE'
     }
     const actualState = topReducer(initialState, {type: 'NEXT_NOTE'})
     const expectedState = {...initialState}
@@ -32,7 +32,7 @@ describe('top-reducer', () => {
     const initialState = {
       notes: ['C', 'D', 'E'],
       currentNoteIndex: -1,
-      audioState: 'START_PLAYING_NOTE'
+      audioState: 'IS_STARTING_PLAYING_NOTE'
     }
     const actualState = topReducer(initialState, {type: 'NEXT_NOTE'})
     const expectedState = {...initialState}
@@ -46,16 +46,16 @@ describe('top-reducer', () => {
       audioState: 'WAITING'
     }
     const actualState = topReducer(initialState, {type: 'NEXT_NOTE'})
-    const expectedState = {...initialState, currentNoteIndex: 0, audioState: 'START_PLAYING_NOTE'}
+    const expectedState = {...initialState, currentNoteIndex: 0, audioState: 'IS_STARTING_PLAYING_NOTE'}
     expect(actualState).to.deep.equal(expectedState)
   })
 
 
-  it('should handle PLAYING_STARTED event', () => {
+  it('should handle PLAYING_NOTE_STARTED event', () => {
     const initialState = {
       notes: ['C', 'D', 'E'],
       currentNoteIndex: 0,
-      audioState: 'START_PLAYING_NOTE'
+      audioState: 'IS_STARTING_PLAYING_NOTE'
     }
     const actualState = topReducer(initialState, {type: 'PLAYING_NOTE_STARTED'})
     const expectedState = {
@@ -66,13 +66,28 @@ describe('top-reducer', () => {
     expect(actualState).to.deep.equal(expectedState)
   })
 
-  it('should handle STOP_PLAYING_NOTE event', () => {
+  it('should handle PLAYING_NOTE_TIMED_OUT event', () => {
     const initialState = {
       notes: ['C', 'D', 'E'],
       currentNoteIndex: 0,
       audioState: 'IS_PLAYING_NOTE'
     }
-    const actualState = topReducer(initialState, {type: 'STOP_PLAYING_NOTE'})
+    const actualState = topReducer(initialState, {type: 'PLAYING_NOTE_TIMED_OUT'})
+    const expectedState = {
+      notes: ['C', 'D', 'E'],
+      currentNoteIndex: 0,
+      audioState: 'IS_STOPPING_PLAYING_NOTE'
+    }
+    expect(actualState).to.deep.equal(expectedState)
+  })
+
+  it('should handle PLAYING_NOTE_STOPPED event', () => {
+    const initialState = {
+      notes: ['C', 'D', 'E'],
+      currentNoteIndex: 0,
+      audioState: 'IS_STOPPING_PLAYING_NOTE'
+    }
+    const actualState = topReducer(initialState, {type: 'PLAYING_NOTE_STOPPED'})
     const expectedState = {
       notes: ['C', 'D', 'E'],
       currentNoteIndex: 0,
