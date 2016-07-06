@@ -2,6 +2,8 @@ var React = require('react')
 var ReactDOM = require('react-dom')
 const { createStore } = require('redux')
 
+const conversions = require('conversions')
+
 const topReducer = require('top-reducer')
 
 window.Base64 = require('../Midi.js/inc/shim/Base64.js')
@@ -15,8 +17,8 @@ const domReady = function (callback) {
 
 const click = () => {
   store.dispatch({type: 'NEXT_NOTE'})
-  // store.dispatch({type: 'PLAYING_NOTE_STARTED'})
-  store.dispatch({type: 'IS_STOPPING_PLAYING_NOTE'})
+//  store.dispatch({type: 'PLAYING_NOTE_STARTED'})
+// store.dispatch({type: 'IS_STOPPING_PLAYING_NOTE'})
 }
 
 document.body.onkeydown = function (event) {
@@ -65,16 +67,19 @@ const render = (state) => {
 }
 
 const playAudio = (state) => {
+  let noteIndex
   switch (state.audioState) {
     case 'IS_STARTING_PLAYING_NOTE':
+      noteIndex = conversions.noteIdFromNoteName(state.notes[state.currentNoteIndex])
       console.log('Play note ' + state.notes[state.currentNoteIndex])
-      MIDI.noteOn(0, 48, 127, 0)
+      MIDI.noteOn(0, noteIndex, 127, 0)
       store.dispatch({type: 'PLAYING_NOTE_STARTED'})
       setTimeout(() => store.dispatch({type: 'PLAYING_NOTE_TIMED_OUT'}), 3000)
       break
     case 'IS_STOPPING_PLAYING_NOTE':
+      noteIndex = conversions.noteIdFromNoteName(state.notes[state.currentNoteIndex])
       console.log('Stop Play note ' + state.notes[state.currentNoteIndex])
-      MIDI.noteOff(0, 48, 0)
+      MIDI.noteOff(0, noteIndex, 0)
       store.dispatch({type: 'PLAYING_NOTE_STOPPED'})
       break
     default:

@@ -1,7 +1,7 @@
 // module.exports = function (state = {note: null} , action) {
 
 var defaultState =  {
-    notes: ['C', 'C#', 'D'],
+    notes: ['C3', 'C3#', 'D3'],
     currentNoteIndex: -1,
     audioState: 'WAITING'
 }
@@ -10,7 +10,6 @@ var defaultState =  {
 // action:        NEXT_NOTE               PLAYING_NOTE_STARTED    PLAYING_NOTE_TIMED_OUT       PLAYING_NOTE_STOPPED
 
 module.exports = function (state = defaultState, action) {
-    console.log('dispatch ' + action.type)
   switch (action.type) {
     case 'NEXT_NOTE':
         if (state.audioState !== 'WAITING') {

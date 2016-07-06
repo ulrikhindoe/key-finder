@@ -23,6 +23,7 @@
     "gulp-mocha-phantomjs": "^0.11.0",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.7",
+    "lodash": "^4.13.1",
     "mocha": "^2.4.5",
     "vinyl-source-stream": "^1.1.0"
   },
@@ -36,7 +37,8 @@
     "./Midi.js/inc/shim/Base64binary.js": "Base64Binary"
   },
   "browser": {
-    "top-reducer": "./client/top-reducer"
+    "top-reducer": "./client/top-reducer",
+    "conversions": "./client/conversions"
   },
   "dependencies": {
     "react": "^15.0.1",

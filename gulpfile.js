@@ -37,7 +37,7 @@ gulp.task('browserify-client', [], function () {
 })
 
 gulp.task('browserify-test', [], function () {
-  return browserify('./test/client/index.js', {insertGlobals: true, transform: babelify})
+  return browserify(['./test/conversions/index.js', './test/client/index.js'], {insertGlobals: true, transform: babelify})
     .bundle()
     .on('error', swallowError)
     .pipe(source('client-test.js'))
